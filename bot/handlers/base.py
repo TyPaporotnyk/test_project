@@ -26,5 +26,5 @@ async def cmd_help(message: types.Message):
     await message.answer(
         f"This bot is using polling instead webhooks.\n"
         f"Also he is using default logging middlewares.\n"
-        f"Source code of this project at {hlink('GitHub', 'https://github.com/TyPaporotnyk/test-project')}"
+        f"Source code of this project at {hlink('GitHub', 'https://github.com/TyPaporotnyk/test_project')}"
     )

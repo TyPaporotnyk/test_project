@@ -1,6 +1,5 @@
 from aiogram import types
 from aiogram.dispatcher.middlewares import BaseMiddleware
-from loguru import logger
 
 from bot.db.db import async_session_maker
 
