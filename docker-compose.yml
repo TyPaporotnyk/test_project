@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15.3-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    restart: on-failure
+    environment:
+      POSTGRES_DB: '${POSTGRES_DB}'
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis:5-alpine
+    restart: on-failure
+    volumes:
+      - redis_data:/data
+    ports:
+      - '6379:6379'
+
+volumes:
+  postgres_data:
+  redis_data:
