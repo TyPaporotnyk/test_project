@@ -16,5 +16,7 @@ class DatabaseMiddleware(BaseMiddleware):
     async def on_pre_process_message(self, message: types.Message, data: dict):
         await self.add_db_session(data)
 
-    async def on_pre_process_callback_query(self, query: types.CallbackQuery, data: dict):
+    async def on_pre_process_callback_query(
+        self, query: types.CallbackQuery, data: dict
+    ):
         await self.add_db_session(data)
