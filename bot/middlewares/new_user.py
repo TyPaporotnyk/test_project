@@ -1,8 +1,8 @@
 from aiogram import types
 from aiogram.dispatcher.middlewares import BaseMiddleware
-from loguru import logger
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from loguru import logger
 
 from bot.db.models import User
 
@@ -11,9 +11,9 @@ class NewUserMiddleware(BaseMiddleware):
     def __init__(self):
         super().__init__()
 
-    async def on_pre_process_message(self, message: types.Message, data: dict):
+    @staticmethod
+    async def create_user_if_not_exist(t_user: types.User, data: dict):
         db_session: AsyncSession = data.get("db_session")
-        t_user = message.from_user
 
         stmt = select(User).filter_by(id=t_user.id)
         user = await db_session.execute(stmt)
@@ -29,4 +29,10 @@ class NewUserMiddleware(BaseMiddleware):
             )
             db_session.add(new_user)
             await db_session.commit()
-            logger.debug("Added new user {user}", user=message.from_user.id)
+            logger.debug("Added new user {user}", user=t_user.id)
+
+    async def on_pre_process_message(self, message: types.Message, data: dict):
+        await self.create_user_if_not_exist(message.from_user, data)
+
+    async def on_pre_process_callback_query(self, query: types.CallbackQuery, data: dict):
+        await self.create_user_if_not_exist(query.from_user, data)
